@@ -18,28 +18,58 @@ function isHttpUrl(src: string) {
   }
 }
 
+function defaultPdfSrc(pptxSrc: string) {
+  if (pptxSrc.toLowerCase().endsWith(".pptx")) return pptxSrc.slice(0, -5) + ".pdf";
+  return null;
+}
+
 export function PptViewer({
   src,
+  pdfSrc,
   title,
   className
 }: {
   src: string;
+  pdfSrc?: string;
   title?: string;
   className?: string;
 }) {
   const [origin, setOrigin] = React.useState("");
+  const [pdfAvailable, setPdfAvailable] = React.useState<boolean | null>(null);
 
   React.useEffect(() => {
     setOrigin(window.location.origin);
   }, []);
 
-  const absolute = React.useMemo(() => (origin ? toAbsoluteUrl(src, origin) : ""), [origin, src]);
-  const embedUrl = React.useMemo(() => {
-    if (!absolute || !isHttpUrl(absolute)) return "";
-    return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(absolute)}`;
-  }, [absolute]);
+  const effectivePdfSrc = React.useMemo(() => pdfSrc ?? defaultPdfSrc(src), [pdfSrc, src]);
+  const absolutePdf = React.useMemo(
+    () => (origin && effectivePdfSrc ? toAbsoluteUrl(effectivePdfSrc, origin) : ""),
+    [effectivePdfSrc, origin]
+  );
 
-  const isLocalhost = React.useMemo(() => origin.includes("localhost") || origin.includes("127.0.0.1"), [origin]);
+  React.useEffect(() => {
+    let canceled = false;
+    async function check() {
+      if (!absolutePdf || !isHttpUrl(absolutePdf)) {
+        setPdfAvailable(false);
+        return;
+      }
+      setPdfAvailable(null);
+      try {
+        const res = await fetch(absolutePdf, { method: "HEAD" });
+        const ok = res.ok;
+        const contentType = res.headers.get("content-type") ?? "";
+        const looksLikePdf = contentType.toLowerCase().includes("application/pdf");
+        if (!canceled) setPdfAvailable(ok && looksLikePdf);
+      } catch {
+        if (!canceled) setPdfAvailable(false);
+      }
+    }
+    check();
+    return () => {
+      canceled = true;
+    };
+  }, [absolutePdf]);
 
   return (
     <div className={cn("space-y-3", className)}>
@@ -47,9 +77,6 @@ export function PptViewer({
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-sm font-semibold text-white">PPTX Viewer</div>
-            <div className="mt-1 text-xs text-white/55">
-              Uses Microsoft Office web viewer. Works best after deployment (public URL).
-            </div>
           </div>
           <a
             href={src}
@@ -59,30 +86,28 @@ export function PptViewer({
             Download PPTX
           </a>
         </div>
-        {isLocalhost ? (
-          <div className="mt-3 text-xs text-white/55">
-            Note: you’re on <code className="text-white/80">localhost</code>, so the Office viewer may not load the file. Deploying this site
-            will make the PPTX URL publicly reachable.
-          </div>
-        ) : null}
       </div>
 
       <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-glow">
-        {embedUrl ? (
+        {pdfAvailable === null ? (
+          <div className="p-6 text-sm text-white/70">Loading PDF…</div>
+        ) : pdfAvailable ? (
           <iframe
-            title={title ?? "PPTX Viewer"}
-            src={embedUrl}
+            title={title ?? "PPT Viewer"}
+            src={effectivePdfSrc ?? ""}
             className="h-[78vh] w-full bg-black"
-            allowFullScreen
             loading="lazy"
           />
         ) : (
-          <div className="p-6 text-sm text-white/70">
-            Viewer not ready yet. Refresh the page once it finishes loading.
+          <div className="space-y-3 p-6 text-sm text-white/70">
+            <div>PDF not found.</div>
+            <div className="text-xs text-white/55">
+              Export your PPTX to PDF and place it in <code className="text-white/80">public/</code> with the same name (e.g.{" "}
+              <code className="text-white/80">{defaultPdfSrc(src) ?? "/presentation.pdf"}</code>).
+            </div>
           </div>
         )}
       </div>
     </div>
   );
 }
-

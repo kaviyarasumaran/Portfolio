@@ -21,7 +21,7 @@ export default function PptPage() {
           </div>
         </div>
 
-        <PptViewer src="/mulecraft-academy-application-development-course.pptx" title="MuleCraft Academy PPTX" />
+        <PptViewer src="/aisaas.pptx" pdfSrc="/aisaas.pdf" title="AI SaaS PPTX" />
       </div>
     </main>
   );

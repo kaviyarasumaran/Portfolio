@@ -61,15 +61,9 @@ export function BlogSection() {
             <CardContent className="relative p-6">
               <div className="absolute inset-0 opacity-60 [background:radial-gradient(circle_at_20%_20%,rgba(99,102,241,.35),transparent_60%),radial-gradient(circle_at_80%_35%,rgba(56,189,248,.22),transparent_55%)]" />
               <div className="relative">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70 backdrop-blur-xl">
-                  <Presentation className="h-3.5 w-3.5 text-sky-300" />
-                  Tomorrow: AI + Micro SaaS • Student interaction
-                </div>
-                <div className="mt-4 text-lg font-semibold text-white">One-page deck (PPT-style)</div>
-                <div className="mt-2 text-sm text-white/65">
-                  System design, SaaS architecture, multi-tenant + RBAC, RAG + knowledge base systems, applied AI UX — in a clean slide flow.
-                </div>
-                <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="text-xs font-medium uppercase tracking-[0.25em] text-white/55">AI SaaS &amp; Micro SaaS</div>
+                <div className="mb-5 mt-3 text-lg font-semibold text-white sm:text-xl">Building scalable AI products from niche ideas</div>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <ButtonLink href="/ppt" variant="primary" size="md" className="justify-center">
                     Open deck <ArrowUpRight className="h-4 w-4" />
                   </ButtonLink>
@@ -80,16 +74,6 @@ export function BlogSection() {
               </div>
             </CardContent>
           </Card>
-        </div>
-        <div className="lg:col-span-5">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-sm text-white/70 backdrop-blur-xl">
-            <div className="text-xs font-medium uppercase tracking-wide text-white/50">Presenter Notes</div>
-            <ul className="mt-3 list-disc space-y-2 pl-5">
-              <li>Use ← → / Space to navigate slides.</li>
-              <li>End with “Take the challenge” and switch to the game page.</li>
-              <li>Share the game plan later and I’ll implement it.</li>
-            </ul>
-          </div>
         </div>
       </div>
     </SectionWrapper>

@@ -91,9 +91,7 @@ export default function GameRegisterPage() {
             </Button>
           </div>
 
-          <div className="mt-4 text-xs text-white/50">
-            Backend: FastAPI + MongoDB. Frontend: Next.js App Router + Tailwind. Uses <code className="text-white/80">fetch</code>.
-          </div>
+          
         </div>
       </SectionWrapper>
     </main>
