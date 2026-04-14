@@ -2,6 +2,7 @@
 
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as React from "react";
 
 import { cn } from "@/lib/cn";
@@ -20,6 +21,7 @@ export function Navbar() {
   const [active, setActive] = React.useState<(typeof items)[number]["id"]>("home");
   const [scrolled, setScrolled] = React.useState(false);
   const { scrollY } = useScroll();
+  const pathname = usePathname();
 
   useMotionValueEvent(scrollY, "change", (latest) => setScrolled(latest > 16));
 
@@ -56,7 +58,7 @@ export function Navbar() {
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="#home" className="group inline-flex items-center gap-2">
+        <Link href={pathname === "/" ? "#home" : "/"} className="group inline-flex items-center gap-2">
           <span className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/5 text-sm backdrop-blur-xl">
             K
           </span>
@@ -70,7 +72,9 @@ export function Navbar() {
           {items.map((it) => (
             <Link
               key={it.id}
-              href={`#${it.id}`}
+              href={
+                it.id === "blog" ? "/blog" : pathname === "/" ? `#${it.id}` : `/#${it.id}`
+              }
               className={cn(
                 "rounded-xl px-3 py-2 text-sm transition",
                 active === it.id ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white"
@@ -83,13 +87,13 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <Link
-            href="#projects"
+            href={pathname === "/" ? "#projects" : "/#projects"}
             className="hidden rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80 backdrop-blur-xl transition hover:bg-white/10 hover:text-white sm:inline-flex"
           >
             View Work
           </Link>
           <Link
-            href="#contact"
+            href={pathname === "/" ? "#contact" : "/#contact"}
             className="rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-sky-500 px-3 py-2 text-sm font-medium text-white shadow-glow transition hover:brightness-110 active:scale-[.98]"
           >
             Let’s Talk

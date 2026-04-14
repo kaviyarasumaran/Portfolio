@@ -1,4 +1,4 @@
-export type TechCategory = "Frontend" | "Backend" | "DevOps";
+export type TechCategory = "Frontend" | "Backend" | "DevOps" | "AI Agent Tech";
 
 export type TechItem = {
   name: string;
@@ -51,10 +51,24 @@ export const techStack: TechItem[] = [
   { name: "React Query", level: "Advanced", category: "Frontend", description: "Server state, caching, mutations." },
   { name: "Node.js", level: "Advanced", category: "Backend", description: "APIs, integrations, background jobs." },
   { name: "FastAPI", level: "Working", category: "Backend", description: "High-performance APIs and services." },
+  { name: "LangGraph", level: "Working", category: "AI Agent Tech", description: "Agent graphs, tool routing, memory." },
+  { name: "n8n", level: "Working", category: "AI Agent Tech", description: "Workflow automation, triggers, integrations." },
   { name: "Docker", level: "Advanced", category: "DevOps", description: "Containerized dev/prod workflows." },
   { name: "AWS", level: "Working", category: "DevOps", description: "Deployment patterns and cloud primitives." },
   { name: "CI/CD", level: "Advanced", category: "DevOps", description: "Pipelines, automation, release flows." }
 ];
+
+export const concepts = [
+  "System Design",
+  "SaaS Architecture",
+  "Multi-tenant Design",
+  "RBAC",
+  "AI/LLM Integration",
+  "Knowledge Base Systems",
+  "RAG",
+  "Geospatial UI",
+  "Applied AI UX"
+] as const;
 
 export const projects: Project[] = [
   {

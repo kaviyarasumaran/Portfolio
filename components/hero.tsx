@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Sparkles } from "lucide-react";
+import { ArrowRight, Coffee, Download, Github, Instagram, Linkedin, Sparkles } from "lucide-react";
 import * as React from "react";
 
+import { Tooltip } from "@/components/ui/tooltip";
 import { ButtonAnchor, ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { profile } from "@/lib/data";
@@ -58,6 +59,29 @@ function AnimatedBackdrop() {
 export function Hero() {
   const typed = useTypewriter({ words: profile.roles });
 
+  const socials = [
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/kaviyarasu-k/",
+      Icon: Linkedin
+    },
+    {
+      label: "GitHub",
+      href: "https://github.com/kaviyarasumaran",
+      Icon: Github
+    },
+    {
+      label: "Instagram",
+      href: "https://www.instagram.com/kaviyarasu_kasi/",
+      Icon: Instagram
+    },
+    {
+      label: "Buy me a coffee",
+      href: "https://buymeacoffee.com/kaizee",
+      Icon: Coffee
+    }
+  ] as const;
+
   return (
     <section id="home" className="relative flex min-h-[92dvh] items-center">
       <AnimatedBackdrop />
@@ -110,6 +134,22 @@ export function Hero() {
               >
                 Download Resume <Download className="h-4 w-4" />
               </ButtonAnchor>
+            </div>
+
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              {socials.map(({ href, label, Icon }) => (
+                <Tooltip key={href} content={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={label}
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/80 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/50"
+                  >
+                    <Icon className="h-5 w-5" />
+                  </a>
+                </Tooltip>
+              ))}
             </div>
 
             <div className="mt-10 flex flex-wrap gap-2">

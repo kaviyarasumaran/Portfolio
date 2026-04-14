@@ -18,13 +18,15 @@ export function Modal({
   onClose,
   title,
   children,
-  className
+  className,
+  containerClassName
 }: {
   open: boolean;
   onClose: () => void;
   title?: string;
   children: React.ReactNode;
   className?: string;
+  containerClassName?: string;
 }) {
   const panelRef = React.useRef<HTMLDivElement | null>(null);
   const restoreFocusRef = React.useRef<HTMLElement | null>(null);
@@ -90,7 +92,7 @@ export function Modal({
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={onClose}
           />
-          <div className="relative mx-auto flex h-full max-w-3xl items-center px-4">
+          <div className={cn("relative mx-auto flex h-full max-w-3xl items-center px-4", containerClassName)}>
             <motion.div
               role="dialog"
               aria-modal="true"

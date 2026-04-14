@@ -30,13 +30,13 @@ export function TechGrid({ items }: { items: TechItem[] }) {
       acc[t.category].push(t);
       return acc;
     },
-    { Frontend: [], Backend: [], DevOps: [] }
+    { Frontend: [], Backend: [], "AI Agent Tech": [], DevOps: [] }
   );
 
   return (
-    <div className="grid gap-10 lg:grid-cols-3">
+    <div className="flex flex-wrap items-start gap-10">
       {(Object.keys(byCategory) as TechCategory[]).map((category) => (
-        <div key={category} className="space-y-4">
+        <div key={category} className="min-w-[260px] flex-[1_1_260px] space-y-4">
           <div className="flex items-center justify-between">
             <div className="text-sm font-semibold tracking-tight text-white">{category}</div>
             <div className="text-xs text-white/50">{byCategory[category].length} tools</div>
@@ -47,7 +47,7 @@ export function TechGrid({ items }: { items: TechItem[] }) {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-2 gap-3"
+            className="flex flex-wrap gap-3"
           >
             {byCategory[category].map((t) => (
               <motion.div key={t.name} variants={item}>
@@ -62,7 +62,7 @@ export function TechGrid({ items }: { items: TechItem[] }) {
                 >
                   <div
                     className={cn(
-                      "relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-3 backdrop-blur-xl transition will-change-transform hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.06]",
+                      "group relative w-fit min-w-[140px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-3 backdrop-blur-xl transition will-change-transform hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.06]",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/50"
                     )}
                     tabIndex={0}
