@@ -15,6 +15,21 @@ function copyRequestHeaders(req: NextRequest) {
   headers.delete("host");
   headers.delete("connection");
   headers.delete("content-length");
+  // Strip browser-only headers so upstream receives a clean server-to-server request.
+  headers.delete("origin");
+  headers.delete("referer");
+  headers.delete("sec-fetch-mode");
+  headers.delete("sec-fetch-site");
+  headers.delete("sec-fetch-dest");
+  headers.delete("sec-fetch-user");
+  headers.delete("sec-ch-ua");
+  headers.delete("sec-ch-ua-mobile");
+  headers.delete("sec-ch-ua-platform");
+
+  const base = getApiBase();
+  if (base.includes("ngrok")) {
+    headers.set("ngrok-skip-browser-warning", "true");
+  }
   return headers;
 }
 
@@ -25,7 +40,8 @@ async function proxy(req: NextRequest, ctx: { params: Promise<{ path: string[] }
   const init: RequestInit = {
     method: req.method,
     headers: copyRequestHeaders(req),
-    redirect: "manual"
+    redirect: "manual",
+    cache: "no-store"
   };
 
   if (req.method !== "GET" && req.method !== "HEAD") {
@@ -48,4 +64,3 @@ export const PUT = proxy;
 export const PATCH = proxy;
 export const DELETE = proxy;
 export const OPTIONS = proxy;
-

@@ -1,4 +1,4 @@
-const API_BASE = "/api/game";
+const API_BASE = "https://homoeomorphic-especially-felecia.ngrok-free.dev/api/game";
 
 async function request<T>(path: string, init?: RequestInit, adminPassword?: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {

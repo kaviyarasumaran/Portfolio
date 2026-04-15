@@ -1,15 +1,19 @@
-const API_BASE = "/api/game";
+// Backend base URL (hardcoded as requested).
+const API_BASE = "https://homoeomorphic-especially-felecia.ngrok-free.dev";
 
 type ApiError = { code?: string; detail?: string } | { detail?: string } | string;
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...init,
-    headers: {
-      "content-type": "application/json",
-      ...(init?.headers ?? {})
-    }
-  });
+  const headers = new Headers(init?.headers);
+  const hasBody = init?.body != null;
+  if (hasBody && !headers.has("content-type")) {
+    headers.set("content-type", "application/json");
+  }
+  if (API_BASE.includes("ngrok-free.dev") && !headers.has("ngrok-skip-browser-warning")) {
+    headers.set("ngrok-skip-browser-warning", "true");
+  }
+
+  const res = await fetch(`${API_BASE}${path}`, { ...init, headers });
 
   if (!res.ok) {
     let body: ApiError = "Request failed";
