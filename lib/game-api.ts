@@ -1,4 +1,5 @@
 // Backend base URL (hardcoded as requested).
+// NOTE: This requires the backend to allow your frontend origin via CORS (e.g. Vercel URL).
 const API_BASE = "https://homoeomorphic-especially-felecia.ngrok-free.dev";
 
 type ApiError = { code?: string; detail?: string } | { detail?: string } | string;
@@ -12,7 +13,6 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (API_BASE.includes("ngrok-free.dev") && !headers.has("ngrok-skip-browser-warning")) {
     headers.set("ngrok-skip-browser-warning", "true");
   }
-
   const res = await fetch(`${API_BASE}${path}`, { ...init, headers });
 
   if (!res.ok) {
